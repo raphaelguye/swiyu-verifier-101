@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.4.9</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <groupId>ch.admin.bj.swiyu</groupId>
+    <artifactId>swiyu-verifier-parent</artifactId>
+    <version>2.1.0-SNAPSHOT</version>
+    <name>Swiyu verifier parent pom</name>
+    <description>Generic verifier for public beta</description>
+
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>verifier-service</module>
+        <module>verifier-application</module>
+    </modules>
+
+    <properties>
+        <java.version>21</java.version>
+        <sonar.jacoco.itReportPath>${project.basedir}/verifier-application/target/jacoco-it.exec
+        </sonar.jacoco.itReportPath>
+        <sonar.jacoco.reportPath>${project.basedir}/verifier-application/target/jacoco.exec</sonar.jacoco.reportPath>
+        <sonar.exclusions>
+            **/org/**/*.java, **/com/**/*.java
+        </sonar.exclusions>
+        <!-- dependency versions -->
+        <archunit-junit5.verion>1.3.0</archunit-junit5.verion>
+        <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
+        <javacrumbs.shedlock.version>6.0.2</javacrumbs.shedlock.version>
+        <springdoc-openapi-starter-webmvc-ui.version>2.8.12</springdoc-openapi-starter-webmvc-ui.version>
+        <logstash-logback-encoder.version>7.4</logstash-logback-encoder.version>
+        <json-path.version>2.9.0</json-path.version>
+        <spring-cloud-dependencies.version>2024.0.0</spring-cloud-dependencies.version>
+        <bcprov-jdk18on.version>1.81</bcprov-jdk18on.version>
+        <bcpkix-jdk18on.version>1.80</bcpkix-jdk18on.version>
+        <!-- Sonar -->
+        <sonar.cpd.exclusions>
+            **/*Dto.java,**/domain/*
+        </sonar.cpd.exclusions>
+        <sonar.coverage.exclusions>
+            **/*Dto.java,**/config/*,**/generated/*,**/*Exception.java,**/*Constants.java,**/*Registry.java,**/*Config.java,**/*Mock*,**/*Application.java
+        </sonar.coverage.exclusions>
+
+        <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
+        <editorconfig-maven-plugin.version>0.1.3</editorconfig-maven-plugin.version>
+        <nimbus-jose-jwt.version>9.40</nimbus-jose-jwt.version>
+        <kotlin-stdlib.version>1.9.23</kotlin-stdlib.version>
+        <jna.version>5.17.0</jna.version>
+        <didresolver.version>2.1.3.0</didresolver.version>
+        <sd-jwt.version>1.4</sd-jwt.version>
+        <jjwt-impl.version>0.12.6</jjwt-impl.version>
+        <jjwt-jackson.version>0.12.6</jjwt-jackson.version>
+        <skip.doc-generate>true</skip.doc-generate>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- fix for CVE-2025-41248 check again once spring-boot-starter-parent 3.4.10 -->
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-core</artifactId>
+                <version>6.4.10</version>
+            </dependency>
+            <!-- end fix -->
+
+            <!-- fix for CVE-2025-41249 check again once spring-boot-starter-parent 3.4.10 -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>6.2.11</version>
+            </dependency>
+            <!-- end fix -->
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                            <goal>prepare-agent-integration</goal>
+                        </goals>
+                    </execution>
+                    <!-- Generate module jacoco.xml reports in verify phase -->
+                    <execution>
+                        <id>report</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.27.0</version>
+                <configuration>
+                    <printFailingErrors>true</printFailingErrors>
+                    <linkXRef>false</linkXRef>
+                    <failOnViolation>true</failOnViolation>
+                    <failurePriority>3</failurePriority>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.27.0</version>
+                <configuration>
+                    <printFailingErrors>true</printFailingErrors>
+                    <linkXRef>false</linkXRef>
+                    <failOnViolation>true</failOnViolation>
+                    <failurePriority>2</failurePriority>
+                    <rulesets>
+                        <ruleset>.github/rulesets/java/pmd_omni_ruleset.xml</ruleset>
+                    </rulesets>
+                    <includeTests>false</includeTests>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>
