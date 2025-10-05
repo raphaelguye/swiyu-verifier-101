@@ -7,7 +7,23 @@ A quick guide to set up and test the [swiyu-verifier](https://github.com/swiyu-a
 - Docker and Docker Compose
 - ngrok (for external access)
 
-## Setup
+## DID creation and registration
+
+Based on the [official cookbook](https://swiyu-admin-ch.github.io/cookbooks/onboarding-base-and-trust-registry/):
+
+1. Register a business partner on ePortal
+2. Create a `.env` based on the [.env template](./.env.template)
+3. Run the following scripts
+  1. `1-create-did-space.sh`
+  2. `2-create-first-did.sh`
+  3. `3-upload-didlog.sh`
+
+🚀 You should have a DID register in the base registry.
+
+## swiyu-verifier Setup
+
+The config has been done following the [official cookbook](https://swiyu-admin-ch.github.io/cookbooks/onboarding-generic-verifier/).
+The next sections explain how to run this verifier locally and test it with the swiyu wallet app.
 
 ### 1. Start Local Services
 
