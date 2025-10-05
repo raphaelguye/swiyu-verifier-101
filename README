@@ -1,73 +1,77 @@
-# swiyu verifier 101
+# swiyu Verifier 101
 
-## Create the DID
+A quick guide to set up and test the [swiyu-verifier](https://github.com/swiyu-admin-ch/swiyu-verifier) service for VC verification.
 
-todo
+## Prerequisites
 
-## Setup swiyu-verifier
+- Docker and Docker Compose
+- ngrok (for external access)
 
-### Start Local Services
-```
-# Clone and navigate to project
+## Setup
+
+### 1. Start Local Services
+
+```bash
 cd swiyu-verifier
-
-# Start all services
 docker compose up -d
 
 # Verify services are running
 docker compose ps
-# Should show: verifier-service (port 8083) and postgres (port 5434)
 ```
 
-### Expose with ngrok (for local tests)
-```
-# Pre-requisite: Install ngrok and setup (auth)
+Expected services: verifier-service (port 8083) and postgres (port 5434)
 
-# Expose verifier service to internet
+### 2. Expose Service for local debugging
+
+In order to be able to be tested with a phone:
+
+```bash
+# Expose verifier service
 ngrok http 8083
 
-# Copy the HTTPS URL (e.g., https://abc123xyz.ngrok-free.app)
-# Update the environment variable EXTERNAL_URL in docker-compose.yml
+# Update EXTERNAL_URL in docker-compose.yml with the ngrok HTTPS URL
 ```
 
-### Create a Verification Request
+## Testing
 
-- Access swagger on http://localhost:8083/swagger-ui/index.html
-- Create a verification request
-  POST /management/api/verifications
-  Payload example:
-```
+### Create Verification Request
+
+1. Open Swagger UI: http://localhost:8083/swagger-ui/index.html
+2. Use `POST /management/api/verifications` with a payload such as:
+
+```json
 {
-"presentation_definition": {
+  "presentation_definition": {
     "id": "simple-test",
     "name": "Simple Test",
     "purpose": "Testing basic verification",
     "input_descriptors": [
-    {
+      {
         "id": "any-credential",
         "name": "Any Credential",
         "format": {
-        "vc+sd-jwt": {
+          "vc+sd-jwt": {
             "sd-jwt_alg_values": ["ES256"],
             "kb-jwt_alg_values": ["ES256"]
-        }
+          }
         },
         "constraints": {
-        "fields": [
+          "fields": [
             {
-            "path": ["$.family_name"]
+              "path": ["$.family_name"]
             }
-        ]
+          ]
         }
-    }
+      }
     ]
-}
+  }
 }
 ```
-- Get the `verification_url` or `verification_deeplink` from the response
-- Use it (qrcode or deeplink) with swiyu to get the Verification Request, once you have a credential such as the [BetaID](https://www.bcs.admin.ch/bcs-web/#/), with a claim *family_name*.
 
-### Verify verification request state
+3. Copy the `verification_url` or `verification_deeplink` from the response
+4. Use it with the official swiyu wallet to complete verification 
+  (requires a credential with `family_name` claim, e.g., [BetaID](https://www.bcs.admin.ch/bcs-web/#/))
 
-- GET /management/api/verifications/{verificationId}
-  → Should change from PENDING to SUCCESS once the presentation has been sent from the wallet
+### Check Verification Status
+
+Use `GET /management/api/verifications/{verificationId}` to monitor status changes from PENDING to SUCCESS once the wallet has send a valid verification response.
