@@ -33,36 +33,41 @@ ngrok http 8083
 ### Create a Verification Request
 
 - Access swagger on http://localhost:8083/swagger-ui/index.html
-- Create a verification request with the payload
+- Create a verification request
+  POST /management/api/verifications
+  Payload example:
 ```
 {
-  "presentation_definition": {
+"presentation_definition": {
     "id": "simple-test",
     "name": "Simple Test",
     "purpose": "Testing basic verification",
     "input_descriptors": [
-      {
+    {
         "id": "any-credential",
         "name": "Any Credential",
         "format": {
-          "vc+sd-jwt": {
+        "vc+sd-jwt": {
             "sd-jwt_alg_values": ["ES256"],
             "kb-jwt_alg_values": ["ES256"]
-          }
+        }
         },
         "constraints": {
-          "fields": [
+        "fields": [
             {
-              "path": ["$.family_name"]
+            "path": ["$.family_name"]
             }
-          ]
+        ]
         }
-      }
+    }
     ]
-  }
+}
 }
 ```
 - Get the `verification_url` or `verification_deeplink` from the response
 - Use it (qrcode or deeplink) with swiyu to get the Verification Request, once you have a credential such as the [BetaID](https://www.bcs.admin.ch/bcs-web/#/), with a claim *family_name*.
 
-TODO: Debug why the the answer is not working
+### Verify verification request state
+
+- GET /management/api/verifications/{verificationId}
+  → Should change from PENDING to SUCCESS once the presentation has been sent from the wallet
