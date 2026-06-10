@@ -17,3 +17,9 @@ curl \
   -H "Authorization: Bearer $SWIYU_IDENTIFIER_REGISTRY_ACCESS_TOKEN" \
   -X POST "$SWIYU_IDENTIFIER_REGISTRY_URL/api/v1/identifier/business-entities/$SWIYU_PARTNER_ID/identifier-entries" \
   -v
+
+echo 
+echo "DID space created successfully!"
+echo "Save the identifierRegistryUrl value in your .env variable IDENTIFIER_REGISTRY_URL"
+echo "save the identifierRegistryId value in your .env variable IDENTIFIER_REGISTRY_ID"
+echo 

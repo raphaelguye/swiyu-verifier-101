@@ -17,4 +17,5 @@ echo "Creating first DID in the DID space: $IDENTIFIER_REGISTRY_URL"
 java -jar $DIDTOOLBOX create --identifier-registry-url $IDENTIFIER_REGISTRY_URL
 
 echo ""
-echo "→ Save the DID log output in ./.didtoolbox/_didlog.jsonl for the next step"
+echo "TODO: Save the DID log output in ./.didtoolbox/_didlog.jsonl for the next step"
+echo ""

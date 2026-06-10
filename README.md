@@ -15,6 +15,8 @@ Based on the [official cookbook](https://swiyu-admin-ch.github.io/cookbooks/onbo
 2. Create a `.env` based on the [.env template](./.env.template)
 3. Run the following scripts
   1. `1-create-did-space.sh`
+    1. Set the variable `IDENTIFIER_REGISTRY_URL` in `.env`
+    2. Set the variable `IDENTIFIER_REGISTRY_ID` in `.env`
   2. `2-create-first-did.sh`
   3. `3-upload-didlog.sh`
 
