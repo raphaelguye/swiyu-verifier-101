@@ -22,6 +22,19 @@ Based on the [official cookbook](https://swiyu-admin-ch.github.io/cookbooks/onbo
 
 🚀 You should have a DID register in the base registry.
 
+## Trust Registry Onboarding
+
+Based on the [official cookbook](https://swiyu-admin-ch.github.io/cookbooks/onboarding-base-and-trust-registry/):
+
+4. Run `4-create-trust-PoP.sh`
+   - Fetches the pending trust onboarding submission (DID + one-time nonce) from the trust registry
+   - Signs the nonce with your assertion private key using the DID Toolbox
+   - Prints the signed Proof-of-Possession JWT
+5. Run `5-submit-PoP.sh <pop_jwt>` with the JWT printed by the previous script
+6. Process on the KYB process on the platform, which require at some point the PoP submitted
+
+🚀 You should now be registered in the trust registry.
+
 ## swiyu-verifier Setup
 
 The config has been done following the [official cookbook](https://swiyu-admin-ch.github.io/cookbooks/onboarding-generic-verifier/).

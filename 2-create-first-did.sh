@@ -8,7 +8,8 @@ else
   exit 1
 fi
 
-DIDTOOLBOX=didtoolbox-1.3.1-jar-with-dependencies.jar # currently, only working with v1.3.1
+# DIDTOOLBOX=didtoolbox-1.3.1-jar-with-dependencies.jar
+DIDTOOLBOX=didtoolbox-2.3.0.jar
 
 echo "local java version: $(java -version 2>&1 | head -n 1)"
 echo "Creating first DID in the DID space: $IDENTIFIER_REGISTRY_URL"
