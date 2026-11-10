@@ -35,6 +35,26 @@ Based on the [official cookbook](https://swiyu-admin-ch.github.io/cookbooks/onbo
 
 🚀 You should now be registered in the trust registry.
 
+## Adding an additional DID
+
+Based on [section 6 of the cookbook](https://swiyu-admin-ch.github.io/cookbooks/onboarding-base-and-trust-registry/#6-adding-additional-dids). Requires the first DID to be onboarded in the trust registry.
+
+1. `6a-create-additional-did-space.sh`: set `IDENTIFIER_REGISTRY_URL_2` and `IDENTIFIER_REGISTRY_ID_2` in `.env`
+2. `7-create-additional-did.sh`: creates the DID and keys in `./did2/.didtoolbox/`
+3. `8-upload-additional-didlog.sh`
+
+   Already have the DID? Run `6b-import-existing-additional-did.sh` instead of 6a to 8: it asks for the DID, the key files and the log (or downloads it from the registry) and stores them in `./did2/.didtoolbox/`.
+
+4. `9-create-add-dids-PoPs.sh`: creates the trust-add-dids submission and the PoPs of both DIDs
+5. `10-submit-add-dids-PoPs.sh <submission_id> <pop_jwt_1> <pop_jwt_2>` with the values printed by the previous script
+
+Check the result (requires `SWIYU_TRUST_REGISTRY_ACCESS_TOKEN`); `status` should become `SUCCEEDED`:
+
+```bash
+curl -s "https://trust-reg-api.trust-infra.swiyu-int.admin.ch/api/v1/trust/trust-add-dids-submissions/<submission_id>" \
+  -H "Authorization: Bearer $SWIYU_TRUST_REGISTRY_ACCESS_TOKEN" | jq
+```
+
 ## swiyu-verifier Setup
 
 The config has been done following the [official cookbook](https://swiyu-admin-ch.github.io/cookbooks/onboarding-generic-verifier/).
